@@ -5,7 +5,7 @@ s.listed_names={99900131} -- ID của Qin Shi Huang cũ
 function s.initial_effect(c)
 	-- XYZ SUMMON PROCEDURE (Chồng lên Rank 12 Qin Shi Huang)
 	c:EnableReviveLimit()
-	Xyz.AddProcedure(c,nil,13,99,s.ovfilter,aux.Stringid(id,0))
+	Xyz.AddProcedure(c,nil,13,Xyz.InfiniteMats,s.ovfilter,aux.Stringid(id,0))
 
 	-- EFFECT 1: UNAFFECTED (If Xyz Summoned)
 	local e1=Effect.CreateEffect(c)
@@ -82,7 +82,7 @@ function s.initial_effect(c)
 	-- EFFECT 6: SELF-RECYCLE (End Phase)
 	local e10=Effect.CreateEffect(c)
 	e10:SetDescription(aux.Stringid(id,3))
-	e10:SetCategory(CATEGORY_TO_DECK)
+	e10:SetCategory(CATEGORY_TODECK)
 	e10:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e10:SetCode(EVENT_PHASE+PHASE_END)
 	e10:SetRange(LOCATION_GRAVE+LOCATION_REMOVED)
@@ -140,7 +140,8 @@ end
 -- EFFECT 4: ATK CALCULATION
 --------------------------------------------------------------------------------
 function s.atkval(e,c)
-	local g=Duel.GetMatchingGroup(Card.IsFaceup,0,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local tp=e:GetHandlerPlayer()
+	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	local val=0
 	for tc in aux.Next(g) do
 		if tc:IsType(TYPE_XYZ) then
@@ -204,7 +205,7 @@ end
 
 function s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToExtra() end
-	Duel.SetOperationInfo(0,CATEGORY_TO_DECK,e:GetHandler(),1,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_TODECK,e:GetHandler(),1,0,0)
 end
 
 function s.tdop(e,tp,eg,ep,ev,re,r,rp)
